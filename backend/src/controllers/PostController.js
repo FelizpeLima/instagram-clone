@@ -17,7 +17,10 @@ module.exports = {
     const filename = `${name}.jpg`;
 
     await sharp(req.file.path)
-      .resize(500)
+      .resize({
+        width: 500,
+        height: 270
+      })
       .jpeg({ quality: 70 })
       .toFile(path.resolve(req.file.destination, "resized", filename));
 
@@ -30,6 +33,8 @@ module.exports = {
       hashtags,
       image: filename
     });
+
+    req.io.emit("post", post);
 
     return res.json({ post });
   }
